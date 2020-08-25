@@ -1,9 +1,133 @@
 Next
 ====
-  * Drop support for MongoDB 2.4 ([#497](https://github.com/agenda/agenda/pull/497))
-  * Rewrite tests: replace mocha and blanket with ava and nyc ([#506](https://github.com/agenda/agenda/pull/506))
+
+* https://github.com/agenda/agenda/pulls
+
+3.1.0 / 2020-04-07
+==================
+
+_Stay safe!_
+
+* Fix for skipImmediate resetting nextRunAt to current date ([#860](https://github.com/agenda/agenda/pull/860)) (Thanks @AshlinDuncan!)
+* Fix deprecated reconnect options ([#948](https://github.com/agenda/agenda/pull/948)) (Thanks @ekegodigital!)
+* Add ability to set a skip when querying jobs. ([#898](https://github.com/agenda/agenda/pull/898)) (Thanks @cjolif!)
+
+Internal:
+* Fixed deprecated MongoDB functions in tests ([#928](https://github.com/agenda/agenda/pull/928)) (Thanks @MichielDeMey!)
+* Updated devDependencies
+
+Thank you @koresar, @sampathBlam, and @MichielDeMey helping to review PRs for this release! 👏
+
+
+3.0.0 / 2020-02-13
+==================
+
+* Support MongoDB's Unified Topology Design ([#921](https://github.com/agenda/agenda/pull/921)) (Thanks @viktorzavadil!)
+* Fix: check that the new nextRunAt is different that the previous nextRunAt ([#863](https://github.com/agenda/agenda/pull/863)) (Thanks @RaphaelRheault!)
+* Update dependencies. Most notably MongoDB driver 3.4 → 3.5 ([#899](https://github.com/agenda/agenda/pull/899), [#900](https://github.com/agenda/agenda/pull/900), [#903](https://github.com/agenda/agenda/pull/903), [#906](https://github.com/agenda/agenda/pull/906), [#908](https://github.com/agenda/agenda/pull/908), [#910](https://github.com/agenda/agenda/pull/910), [#912](https://github.com/agenda/agenda/pull/912), [#913](https://github.com/agenda/agenda/pull/913), [#920](https://github.com/agenda/agenda/pull/920), [#922](https://github.com/agenda/agenda/pull/922))
+* Documentation updates, thanks @MichielDeMey and @Sunghee2. ([#923](https://github.com/agenda/agenda/pull/923) & [#907](https://github.com/agenda/agenda/pull/907))
+
+BREAKING
+--------
+
+* Stop testing for Node.js 8. This might still work but we're no longer actively testing for it. ([#925](https://github.com/agenda/agenda/pull/925))
+
+2.3.0 / 2019-12-16
+==================
+
+* Improved performance in situations when there are many "expired" jobs in the  database ([#869](https://github.com/agenda/agenda/pull/869)) (Thanks @mfred488!)
+* Fix periodic node.js process unhandledRejection ([#887](https://github.com/agenda/agenda/pull/887)) (Thanks @koresar and @Scorpil)
+* Update dependencies
+
+2.2.0 / 2019-11-24
+==================
+
+  * Fix `skipImmediate` option in `.every` ([#861](https://github.com/agenda/agenda/pull/861)) (Thanks @erics2783!)
+  * Add try/catch block to agenda#now method ([#876](https://github.com/agenda/agenda/pull/876)) (Thanks @sampathBlam!)
+  * Refactor job queuing mechanism. Agenda n ow guarantees priority when executing jobs scheduled the same datetime. Fixes also some tests. ([#852](https://github.com/agenda/agenda/pull/852)) (Thank you @dmbarreiro!)
+  * Update dependencies (Kudos @simison!)
+    Most notably `mongodb` ~3.2.7 -> ~3.3.0 ([changelog](https://github.com/mongodb/node-mongodb-native/tree/v3.3.0)) — highlights:
+    - Mongo DB Server Version 4.2 feature support
+    - Merged `mongodb-core` into `node-mongodb-native`
+    - Beta support for MongoDB Client-Side Encryption
+    - SRV Polling for Sharded Clusters
+  * Updates to documentation (Thank you @lautarobock, @sampathBlam, @indatawetrust)
+
+2.1.0 / 2019-09-09
+==================
+  * Support async functions in job processing ([#653](https://github.com/agenda/agenda/pull/653)) (thanks @princjef!)
+  * Allow sorting and limiting jobs when searching ([#665](https://github.com/agenda/agenda/pull/665)) (thank you @edwin-jones)
+  * Update MongoClient connection settings with `useNewUrlParser: true` to remove the deprecation warning. ([#806](https://github.com/agenda/agenda/pull/806)) (thanks @dpawson905!)
+  * Allow valid date strings when scheduling ([#808](https://github.com/agenda/agenda/pull/808)) (Thanks @wingsbob!)
+  * Update dependencies ([#820](https://github.com/agenda/agenda/pull/820))
+  * Update documentation (kudos @dandv, @pedruino and many others!)
+  * Fix linting errors ([#847](https://github.com/agenda/agenda/pull/847)) (thanks @dmbarreiro!)
+
+2.0.2 / 2018-09-15
+==================
+  * Fixes a MongoDB connection string issue with Atlas ([#674](
+https://github.com/agenda/agenda/pull/674)
+
+2.0.1 / 2018-08-30
+==================
+  * Fix a bug where `job.touch()` wasn't promise based, as it should've been ([#667](https://github.com/agenda/agenda/pull/667)
+
+2.0.0 / 2018-07-19
+==================
+  * Rewrite tests: replace `mocha` and `blanket` with `ava` and `nyc` ([#506](https://github.com/agenda/agenda/pull/506))
   * Optimization: don't try and unlock jobs when `_lockedJobs` is empty ([#509](https://github.com/agenda/agenda/pull/509))
   * Code cleanup ([#503](https://github.com/agenda/agenda/pull/503))
+  * Ensure tests pass for Node.js version 10 [#608](https://github.com/agenda/agenda/pull/608))
+  * Add `skipImmediate` to `repeatEvery()` options to skip immediate run of repeated jobs when Agenda starts. See [documentation](https://github.com/agenda/agenda/blob/202c9e95b40115dc763641f55180db9a4f358272/README.md#repeateveryinterval-options) ([#594](https://github.com/agenda/agenda/pull/594))
+  * Fixes some flaky tests
+  * Adds docs generator (`npm run docs` to generate `/docs`)
+
+BREAKING
+--------
+  * Rewrite Agenda API support promises! ([#557](https://github.com/agenda/agenda/pull/557))
+
+    No more callbacks! Instead of:
+
+    ```js
+    function graceful() {
+      agenda.stop(function() {
+        process.exit(0);
+      });
+    }
+    ```
+
+    You need to:
+    ```js
+    async function graceful() {
+      await agenda.stop();
+      process.exit(0);
+    }
+    ```
+
+    You don't anymore have to listen for `start` event. Instead you can do:
+    ```js
+    await agenda.start();
+    agenda.every('10 minutes', 'example');
+    ```
+
+    However, this will still work:
+    ```js
+    agenda.on('ready', function () {
+      agenda.every('10 minutes', 'example');
+      agenda.start();
+    });
+    ```
+
+    See the documentation for more!
+
+  * Drop support for Node.js versions 4, 5 and 6 ([#557](https://github.com/agenda/agenda/pull/557) / [#608](https://github.com/agenda/agenda/pull/608))
+  * Drop support for MongoDB 2.4 ([#497](https://github.com/agenda/agenda/pull/497))
+  * Update Native MongoDB driver to 3.1 from 2.2 ([#616](https://github.com/agenda/agenda/pull/616))
+  * Jobs _emit_ errors instead of throwing them
+
+1.0.3 / 2017-10-17
+==================
+  * Update dependencies ([2854c7e](https://github.com/agenda/agenda/commit/65159172b34b9a1344814619c117474bcc323f8d))
 
 1.0.2 / 2017-10-17
 ==================
