@@ -122,7 +122,7 @@ describe('Job', () => {
   describe('schedule', () => {
     let job;
     beforeEach(() => {
-      job = new Job({ agenda: jobs });
+      job = new Job({agenda});
     });
     it('sets the next run time', () => {
       job.schedule('in 5 minutes');
@@ -138,7 +138,7 @@ describe('Job', () => {
       const date = new Date(0);
       const when = 'some schedule string for custom parser';
 
-      jobs._getNextRunAt = (_job, time) => {
+      agenda._getNextRunAt = (_job, time) => {
         expect(time).to.be(when);
         expect(_job).to.be(job);
 
@@ -179,7 +179,7 @@ describe('Job', () => {
     let job;
 
     beforeEach(() => {
-      job = new Job({ agenda: jobs });
+      job = new Job({agenda});
     });
 
     it('returns the job', () => {
@@ -253,7 +253,7 @@ describe('Job', () => {
     it('applies getNextRunAt for repeatEvery', () => {
       const date = new Date(0);
 
-      jobs._getNextRunAt = _job => {
+      agenda._getNextRunAt = _job => {
         expect(_job).to.be(job);
 
         return date;
@@ -267,7 +267,7 @@ describe('Job', () => {
     it('applies getNextRunAt for repeatAt', () => {
       const date = new Date(0);
 
-      jobs._getNextRunAt = _job => {
+      agenda._getNextRunAt = _job => {
         expect(_job).to.be(job);
 
         return date;
